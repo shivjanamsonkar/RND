@@ -1,11 +1,6 @@
 /* ── Report detail page ─────────────────────────────────────────────────── */
 const API = '';
 
-function esc(str) {
-  return String(str)
-    .replace(/&/g, '&amp;').replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-}
 
 function scoreClass(s) {
   return s >= 80 ? 'score-high' : s >= 50 ? 'score-medium' : 'score-low';

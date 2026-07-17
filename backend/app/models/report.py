@@ -1,7 +1,7 @@
 """
 Report model – wraps findings with metadata for storage and display.
 """
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 from pydantic import BaseModel, Field
 import uuid
@@ -11,7 +11,7 @@ from app.models.finding import Finding, Severity, SEVERITY_SCORE
 
 class Report(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     language: str
     filename: str
     total_findings: int = 0

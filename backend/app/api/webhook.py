@@ -71,7 +71,7 @@ async def github_webhook(
         return {"detail": "GITHUB_TOKEN not set — skipping scan."}
 
     headers = {
-        "Authorization": f"******",
+        "Authorization": f"token {_GH_TOKEN}",
         "Accept": "application/vnd.github+json",
         "X-GitHub-Api-Version": "2022-11-28",
     }

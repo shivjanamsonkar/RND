@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libgdk-pixbuf2.0-0 libxml2 libxslt1.1 \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
+COPY backend/requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # ── Runtime stage ──────────────────────────────────────────────────────────────
@@ -27,8 +27,9 @@ COPY --from=builder /install /usr/local
 
 WORKDIR /app
 
-COPY app/ ./app/
-COPY ../frontend/ ./frontend/
+# Build context is the repo root (set in docker-compose.yml)
+COPY backend/app/ ./app/
+COPY frontend/ ./frontend/
 
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
