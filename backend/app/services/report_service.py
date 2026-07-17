@@ -5,12 +5,14 @@ In production, replace the in-memory dict with a PostgreSQL-backed store.
 """
 import json
 import os
+import logging
 from datetime import datetime, timezone
 
 from app.models.report import Report
 
 # ── In-memory store (keyed by report ID) ──────────────────────────────────────
 _store: dict[str, Report] = {}
+logger = logging.getLogger(__name__)
 
 
 def save_report(report: Report) -> None:
@@ -195,5 +197,6 @@ def generate_pdf(report: Report) -> bytes:
         from weasyprint import HTML  # type: ignore
         return HTML(string=html_content).write_pdf()
     except Exception:
+        logger.exception("PDF generation failed; returning HTML fallback content.")
         # weasyprint not available or failed at runtime — return HTML bytes
         return html_content.encode()

@@ -60,8 +60,9 @@ def get_report_pdf(report_id: str, _: str = Depends(require_api_key)):
         if pdf_bytes[:4] == b"%PDF"
         else "text/html"
     )
+    extension = "pdf" if media_type == "application/pdf" else "html"
     return Response(
         content=pdf_bytes,
         media_type=media_type,
-        headers={"Content-Disposition": f'attachment; filename="report-{report_id}.pdf"'},
+        headers={"Content-Disposition": f'attachment; filename="report-{report_id}.{extension}"'},
     )
