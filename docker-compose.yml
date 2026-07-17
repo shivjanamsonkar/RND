@@ -1,0 +1,24 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      # Set to "*" to disable API-key auth during development.
+      # In production, set to a comma-separated list of valid API keys.
+      - SECURITY_API_KEYS=*
+      # Optional: GitHub Personal Access Token for the webhook endpoint.
+      - GITHUB_TOKEN=${GITHUB_TOKEN:-}
+      # Optional: shared secret configured in your GitHub webhook settings.
+      - GITHUB_WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET:-}
+    volumes:
+      # Mount the frontend so changes are reflected without rebuilding
+      - ./frontend:/app/frontend:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
