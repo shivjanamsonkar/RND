@@ -194,6 +194,6 @@ def generate_pdf(report: Report) -> bytes:
     try:
         from weasyprint import HTML  # type: ignore
         return HTML(string=html_content).write_pdf()
-    except ImportError:
-        # weasyprint not available — return HTML bytes
+    except Exception:
+        # weasyprint not available or failed at runtime — return HTML bytes
         return html_content.encode()
