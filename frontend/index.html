@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Security Analysis Platform</title>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <span class="logo">🔐 SecureAnalyze</span>
+    <nav>
+      <a href="/">Scan</a>
+      <a href="#history">History</a>
+      <a href="/docs" target="_blank">API Docs</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <!-- ── Upload / Scan Panel ──────────────────────────────────────────── -->
+  <section class="card" id="scan-panel">
+    <h2>Submit Code for Security Analysis</h2>
+    <p class="sub">Upload a source file or paste code below. Supports Python, C/C++, JavaScript, Java, Go, Ruby, PHP.</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('file')">📁 Upload File</button>
+      <button class="tab" onclick="switchTab('paste')">📝 Paste Code</button>
+    </div>
+
+    <form id="scan-form" enctype="multipart/form-data">
+      <!-- File upload tab -->
+      <div id="tab-file" class="tab-content">
+        <label class="drop-zone" id="drop-zone">
+          <span id="drop-text">Drop your source file here, or click to browse</span>
+          <input type="file" id="file-input" name="file" style="display:none"
+                 accept=".py,.c,.cpp,.cc,.js,.ts,.java,.go,.rb,.php">
+        </label>
+      </div>
+
+      <!-- Paste code tab -->
+      <div id="tab-paste" class="tab-content hidden">
+        <div class="form-row">
+          <label>Language
+            <select name="language" id="lang-select">
+              <option value="">Auto-detect from filename</option>
+              <option value="python">Python</option>
+              <option value="c">C</option>
+              <option value="cpp">C++</option>
+              <option value="javascript">JavaScript</option>
+              <option value="typescript">TypeScript</option>
+              <option value="java">Java</option>
+              <option value="go">Go</option>
+              <option value="ruby">Ruby</option>
+              <option value="php">PHP</option>
+            </select>
+          </label>
+          <label>Filename (for display)
+            <input type="text" name="filename" id="fname-input" placeholder="e.g. app.py">
+          </label>
+        </div>
+        <textarea name="code" id="code-textarea" rows="18"
+                  placeholder="Paste your source code here…"></textarea>
+      </div>
+
+      <div id="api-key-row" class="form-row">
+        <label>API Key (leave blank in dev mode)
+          <input type="password" id="api-key-input" placeholder="X-API-Key">
+        </label>
+      </div>
+
+      <button type="submit" class="btn-primary" id="scan-btn">🔍 Scan Now</button>
+    </form>
+
+    <div id="scan-status" class="status hidden"></div>
+  </section>
+
+  <!-- ── Recent Scans ──────────────────────────────────────────────────── -->
+  <section class="card" id="history">
+    <div class="section-header">
+      <h2>Recent Scans</h2>
+      <button class="btn-sm" onclick="loadHistory()">↻ Refresh</button>
+    </div>
+    <div id="history-table-wrap">
+      <p class="loading">Loading…</p>
+    </div>
+  </section>
+</main>
+
+<script src="/static/js/app.js"></script>
+</body>
+</html>
